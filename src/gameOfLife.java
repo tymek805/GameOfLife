@@ -59,26 +59,21 @@ public class gameOfLife {
             for (int j = -1; j < 2; j++) {
                 if (j != 0 || i != 0){
 
-                    // 00 01 02 03 04
-                    // 10 11 12 13 14
-                    // 20 21 22 23 24
-                    // 30 31 32 33 34
-                    // 40 41 42 43 44
-
                     if (x1 == 0 && y1 == 0 && i == -1 && j == -1){              // Górny lewy róg
-                        if (board[x - 1][y - 1]) suma++;
+                        if (board[0][0]) suma++;
 
                     } else if (x1 == 0 && y1 == y - 1 && i == -1 && j == 1){    // Górny prawy róg
-                        if (board[x - 1][y - 1]) suma++;
-
+                        if (board[0][y - 1]) suma++;
 
                     } else if (x1 == x - 1 && y1 == 0 && i == 1 && j == -1){    // Dolny lewy róg
-                        if (board[x - 1][y - 1]) suma++;
+                        if (board[x - 1][0]) suma++;
 
                     } else if (x1 == x - 1 && y1 == y - 1 && i == 1 && j == 1){ // Dolny prawy róg
                         if (board[x - 1][y - 1]) suma++;
 
-                    }else if (x1 == 0 && i == -1){      // Górna krawędź bez rogów
+                    }
+
+                    if (x1 == 0 && i == -1){      // Górna krawędź bez rogów
                         if (board[x - 1][y1 + j]) suma++;
 
                     }else if (x1 == x - 1 && i == 1){   // Dolna krawędź bez rogów
