@@ -33,15 +33,15 @@ public class gameOfLife {
         }
     }
 
-    public void writeDown(boolean[][] x){
+    public void writeDown(){
         for (int i = 0; i <= y; i++) {
             System.out.print("--");
         }
         System.out.println();
-        for (int i = 0; i < x.length; i++) {
+        for (int i = 0; i < x; i++) {
             System.out.print("|");
-            for (int j = 0; j < x[i].length; j++) {
-                if (x[i][j]) System.out.print("■ ");
+            for (int j = 0; j < y; j++) {
+                if (board[i][j]) System.out.print("■ ");
                 else System.out.print("  ");
             }
             System.out.print("|");
@@ -55,10 +55,44 @@ public class gameOfLife {
 
     private int howManyLive(int x1, int y1){
         int suma = 0;
-        for (int k = -1; k < 2; k++) {
-            for (int i = -1; i < 2; i++) {
-                if (i != 0 || k != 0){
-                    if (board[x1+k][y1+i]) suma++;
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (j != 0 || i != 0){
+
+                    // 00 01 02 03 04
+                    // 10 11 12 13 14
+                    // 20 21 22 23 24
+                    // 30 31 32 33 34
+                    // 40 41 42 43 44
+
+                    if (x1 == 0 && y1 == 0 && i == -1 && j == -1){              // Górny lewy róg
+                        if (board[x - 1][y - 1]) suma++;
+
+                    } else if (x1 == 0 && y1 == y - 1 && i == -1 && j == 1){    // Górny prawy róg
+                        if (board[x - 1][y - 1]) suma++;
+
+
+                    } else if (x1 == x - 1 && y1 == 0 && i == 1 && j == -1){    // Dolny lewy róg
+                        if (board[x - 1][y - 1]) suma++;
+
+                    } else if (x1 == x - 1 && y1 == y - 1 && i == 1 && j == 1){ // Dolny prawy róg
+                        if (board[x - 1][y - 1]) suma++;
+
+                    }else if (x1 == 0 && i == -1){      // Górna krawędź bez rogów
+                        if (board[x - 1][y1 + j]) suma++;
+
+                    }else if (x1 == x - 1 && i == 1){   // Dolna krawędź bez rogów
+                        if (board[0][y1 + j]) suma++;
+
+                    }else if (y1 == 0 && j == -1){      // Lewa krawędź bez rogów
+                        if (board[x1 + i][y - 1]) suma++;
+
+                    }else if (y1 == y - 1 && j == 1){   // Prawa krawędź bez rogów
+                        if (board[x1 + i][0]) suma++;
+
+                    } else{ // Wnętrze planszy
+                        if (board[x1 + i][y1 + j]) suma++;
+                    }
                 }
             }
         }
@@ -67,25 +101,23 @@ public class gameOfLife {
 
     public void startGame(){
         boolean[][] future_board = new boolean[x][y];
-        for (int i = 1; i < x - 2; i++) {
-            for (int j = 1; j < y - 2; j++) {
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
                 int num_of_alive = howManyLive(i, j);
                 if (board[i][j]){
-                    if (num_of_alive == 2 || num_of_alive == 3) future_board[i][j] = true;
-                    else future_board[i][j] = false;
+                    future_board[i][j] = num_of_alive == 2 || num_of_alive == 3;
                 }else {
-                    if (num_of_alive == 3) future_board[i][j] = true;
-                    else future_board[i][j] = false;
+                    future_board[i][j] = num_of_alive == 3;
                 }
             }
         }
         changeArray(future_board);
-        writeDown(board);
+        writeDown();
     }
 
     private void changeArray(boolean[][] future_board){
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
+        for (int i = 0; i < x - 1; i++) {
+            for (int j = 0; j < y - 1; j++) {
                 board[i][j] = future_board[i][j];
             }
         }
