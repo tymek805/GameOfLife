@@ -1,24 +1,43 @@
 import java.util.Random;
 
 public class gameOfLife {
-    final public int x = 32; //height of board
-    final public int y = 64; //width of board
+    final private int x; //height of board
+    final private int y; //width of board
 
-    public boolean[][] createEmpty(){
-        boolean[][] myArray = new boolean[x][y];
-        for (int i = 0; i < myArray.length; i++) {
-            for (int j = 0; j < myArray[i].length; j++) {
-                myArray[i][j] = false;
+    final private boolean[][] board;
+
+    public gameOfLife(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.board = new boolean[x][y];
+
+        fillWithRand();
+    }
+
+    // Dopóki nie stworzymy inputu urzytkownika nie ma co tej funkcji inicjalizować
+    private boolean[][] createEmpty(){
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                board[i][j] = false;
             }
         }
-        return myArray;
+        return board;
+    }
+
+    private void fillWithRand(){
+        Random random = new Random();
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                board[i][j] = random.nextBoolean();
+            }
+        }
     }
 
     public void writeDown(boolean[][] x){
-        for (int i = 0; i < x[1].length; i++) {
+        for (int i = 0; i <= y; i++) {
             System.out.print("--");
         }
-
+        System.out.println();
         for (int i = 0; i < x.length; i++) {
             System.out.print("|");
             for (int j = 0; j < x[i].length; j++) {
@@ -29,57 +48,46 @@ public class gameOfLife {
             System.out.println();
         }
 
-        for (int i = 0; i < x[1].length; i++) {
+        for (int i = 0; i <= y; i++) {
             System.out.print("--");
         }
     }
 
-    public void fillWithRand(boolean[][] x){
-        Random random = new Random();
-        for (int i = 0; i < x.length; i++) {
-            for (int j = 0; j < x[i].length; j++) {
-                x[i][j] = random.nextBoolean();
-            }
-        }
-    }
-
-    public int howManyLive(boolean[][] x,int x1, int y1){
+    private int howManyLive(int x1, int y1){
         int suma = 0;
         for (int k = -1; k < 2; k++) {
             for (int i = -1; i < 2; i++) {
                 if (i != 0 || k != 0){
-                    if (x[x1+k][y1+i]){
-                        suma++;
-                    }
+                    if (board[x1+k][y1+i]) suma++;
                 }
             }
         }
         return suma;
     }
 
-    public void startGame(boolean[][] x){
-        boolean[][] myArray = new boolean[x.length][x[0].length];
-        for (int i = 1; i < (x.length-2); i++) {
-            for (int j = 1; j < (x[i].length-2); j++) {
-                if (x[i][j]){
-                    if (howManyLive(x,i,j) < 4 && howManyLive(x,i,j) > 2) myArray[i][j] = true;
-                    else myArray[i][j] = false;
+    public void startGame(){
+        boolean[][] future_board = new boolean[x][y];
+        for (int i = 1; i < x - 2; i++) {
+            for (int j = 1; j < y - 2; j++) {
+                int num_of_alive = howManyLive(i, j);
+                if (board[i][j]){
+                    if (num_of_alive == 2 || num_of_alive == 3) future_board[i][j] = true;
+                    else future_board[i][j] = false;
                 }else {
-                    if (howManyLive(x,i,j) == 3) myArray[i][j] = true;
-                    else myArray[i][j] = false;
+                    if (num_of_alive == 3) future_board[i][j] = true;
+                    else future_board[i][j] = false;
                 }
             }
         }
-        changeArray(x,myArray);
-        writeDown(x);
+        changeArray(future_board);
+        writeDown(board);
     }
 
-    public boolean[][] changeArray(boolean[][] x,boolean[][] y){
-        for (int i = 0; i < x.length; i++) {
-            for (int j = 0; j < x[i].length; j++) {
-                x[i][j] = y[i][j];
+    private void changeArray(boolean[][] future_board){
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                board[i][j] = future_board[i][j];
             }
         }
-        return x;
     }
 }
