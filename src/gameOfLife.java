@@ -58,36 +58,15 @@ public class gameOfLife {
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if (j != 0 || i != 0){
+                    int x = x1;
+                    int y = y1;
+                    if (x1+i == -1) x = (board.length);
+                    else if(x1+i == board.length) x = -1;
 
-                    if (x1 == 0 && y1 == 0 && i == -1 && j == -1){              // Górny lewy róg
-                        if (board[0][0]) suma++;
+                    if (y1+j == -1) y = (board[0].length);
+                    else if(y1+j == board[0].length) y = -1;
 
-                    } else if (x1 == 0 && y1 == y - 1 && i == -1 && j == 1){    // Górny prawy róg
-                        if (board[0][y - 1]) suma++;
-
-                    } else if (x1 == x - 1 && y1 == 0 && i == 1 && j == -1){    // Dolny lewy róg
-                        if (board[x - 1][0]) suma++;
-
-                    } else if (x1 == x - 1 && y1 == y - 1 && i == 1 && j == 1){ // Dolny prawy róg
-                        if (board[x - 1][y - 1]) suma++;
-
-                    }
-
-                    if (x1 == 0 && i == -1){      // Górna krawędź bez rogów
-                        if (board[x - 1][y1 + j]) suma++;
-
-                    }else if (x1 == x - 1 && i == 1){   // Dolna krawędź bez rogów
-                        if (board[0][y1 + j]) suma++;
-
-                    }else if (y1 == 0 && j == -1){      // Lewa krawędź bez rogów
-                        if (board[x1 + i][y - 1]) suma++;
-
-                    }else if (y1 == y - 1 && j == 1){   // Prawa krawędź bez rogów
-                        if (board[x1 + i][0]) suma++;
-
-                    } else{ // Wnętrze planszy
-                        if (board[x1 + i][y1 + j]) suma++;
-                    }
+                    if (board[x + i][y + j]) suma++;
                 }
             }
         }
@@ -116,5 +95,12 @@ public class gameOfLife {
                 board[i][j] = future_board[i][j];
             }
         }
+    }
+
+    // Jeśli tablica jest pusta to kończy grę
+    public boolean is_not_Empty(){
+        boolean[][] empty_board = new boolean[x][y];
+        if (board == empty_board) return false;
+        return true;
     }
 }
