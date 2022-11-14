@@ -1,11 +1,13 @@
 import java.io.IOException;
 import java.util.Random;
+import java.io.IOException;
 
 public class gameOfLife {
     final private int x; //height of board
     final private int y; //width of board
 
     final private boolean[][] board;
+    private static int waitFor;
 
     public gameOfLife(int x, int y){
         this.x = x;
@@ -34,6 +36,7 @@ public class gameOfLife {
         }
     }
 
+    //Add clearing console
     public void writeDown(){
         for (int i = 0; i <= y; i++) {
             System.out.print("--");
@@ -103,5 +106,10 @@ public class gameOfLife {
         boolean[][] empty_board = new boolean[x][y];
         if (board == empty_board) return false;
         return true;
+    }
+
+    //Clearing the console
+    public void clearConsole() throws IOException, InterruptedException {
+        waitFor = new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
     }
 }
