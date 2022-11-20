@@ -1,20 +1,20 @@
 import java.io.IOException;
 import java.util.Random;
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class gameOfLife {
     final private int x; //height of board
     final private int y; //width of board
+    final private int n = 10;
 
     final private boolean[][] board;
     private static int waitFor;
 
-    public gameOfLife(int x, int y){
+    public gameOfLife(int x, int y, boolean[][] board){
         this.x = x;
         this.y = y;
-        this.board = new boolean[x][y];
-
-        fillWithRand();
+        this.board = board;
+        // fillWithRand();
     }
 
     // Dopóki nie stworzymy inputu urzytkownika nie ma co tej funkcji inicjalizować
@@ -77,7 +77,7 @@ public class gameOfLife {
         return suma;
     }
 
-    public void startGame(){
+    public boolean[][] startGame(){
         boolean[][] future_board = new boolean[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -90,7 +90,8 @@ public class gameOfLife {
             }
         }
         changeArray(future_board);
-        writeDown();
+        return board;
+        // writeDown();
     }
 
     private void changeArray(boolean[][] future_board){
