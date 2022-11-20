@@ -5,7 +5,6 @@
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class gameOfLife {
     final private int x; //height of board
