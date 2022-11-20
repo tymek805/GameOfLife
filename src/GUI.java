@@ -1,3 +1,8 @@
+// Zespol:
+// Wojciech Krzos
+// Filip Kubecki
+// Tymoteusz Lango
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
