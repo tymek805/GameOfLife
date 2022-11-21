@@ -1,20 +1,23 @@
+// Zespol:
+// Wojciech Krzos
+// Filip Kubecki
+// Tymoteusz Lango
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
-public class GUI implements ActionListener{
+public class GraphicUI implements ActionListener{
     JFrame frame;
     JPanel buttonPanel, functionPanel;
     JButton[][] buttons;
     int size;
-    boolean[][] ifAlive; // Tablica zawierająca informacje czy komórka żyje czy nie
-    boolean[][] initial;
+    boolean[][] ifAlive, initial; // Tablica zawierająca informacje czy komórka żyje czy nie
     boolean canPlay = true;
-    gameOfLife game;
+    GameOfLife game;
 
     // Konstruktor klasy
-    public GUI(int size){
+    public GraphicUI(int size){
         this.size = size;
         this.ifAlive = new boolean[size][size];
         this.initial = new boolean[size][size];
@@ -23,7 +26,6 @@ public class GUI implements ActionListener{
 
     private void startGUI(){
         //Interfejs jest podzielony na panel z przyciskami i panel dolny pod nim
-
         frame = new JFrame(); // Inicjacja całego okienka
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Koniec procesu przy wciśnięciu krzyzyka
         frame.setVisible(true);
@@ -67,10 +69,11 @@ public class GUI implements ActionListener{
         frame.setSize(500,500);
         frame.revalidate(); // Odświerza okienko i jego zawartość
         frame.repaint();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Ustawia okienko gry na środku ekranu
     }
+
     public class MyThread implements Runnable{
+
         public void run(){
             if (canPlay){
                 buttonStatusUpdate(ifAlive);
@@ -103,8 +106,7 @@ public class GUI implements ActionListener{
         buttonPanel.revalidate();
         buttonPanel.repaint();
     }
-
-    public void start(ActionEvent event) {
+    private void start(ActionEvent event) {
         System.out.println("START");
 
         for (int i = 0; i < size; i++){
@@ -112,8 +114,13 @@ public class GUI implements ActionListener{
                 initial[i][j] = ifAlive[i][j];
             }
         }
+        for (int i = 0; i < size; i++){
+            for ( int j = 0 ; j < size; j++){
+                ifAlive[i][j] = initial[i][j];
+            }
+        }
         canPlay = true;
-        game = new gameOfLife(size, size, ifAlive);
+        game = new GameOfLife(size, size, ifAlive);
         ifAlive = game.startGame();
         Runnable r1 = new MyThread();
         Thread th = new Thread(r1);
@@ -128,9 +135,13 @@ public class GUI implements ActionListener{
     private void reset(ActionEvent actionEvent) {
         System.out.println("RESET");
         canPlay = false;
+        for (int i = 0; i < size; i++){
+            for ( int j = 0 ; j < size; j++){
+                ifAlive[i][j] = initial[i][j];
+            }
+        }
         buttonStatusUpdate(initial);
     }
-
 
     // Zmiana początkowa statusu przycisków
     @Override
@@ -151,6 +162,6 @@ public class GUI implements ActionListener{
     }
 
     public static void main(String[] args) {
-        GUI gui = new GUI(25);
+        GraphicUI gui = new GraphicUI(25);
     }
 }
