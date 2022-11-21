@@ -3,8 +3,6 @@
 // Filip Kubecki
 // Tymoteusz Lango
 
-import java.util.Random;
-
 public class GameOfLife {
     final private int x, y; // size of the board
     final private boolean[][] board;
