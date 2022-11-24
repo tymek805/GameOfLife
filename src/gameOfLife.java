@@ -3,62 +3,14 @@
 // Filip Kubecki
 // Tymoteusz Lango
 
-import java.io.IOException;
-import java.util.Random;
-
-public class gameOfLife {
-    final private int x; //height of board
-    final private int y; //width of board
-    final private int n = 10;
-
+public class GameOfLife {
+    final private int x, y; // size of the board
     final private boolean[][] board;
-    private static int waitFor;
 
-    public gameOfLife(int x, int y, boolean[][] board){
+    public GameOfLife(int x, int y, boolean[][] board){
         this.x = x;
         this.y = y;
         this.board = board;
-        // fillWithRand();
-    }
-
-    // Dopóki nie stworzymy inputu urzytkownika nie ma co tej funkcji inicjalizować
-    private boolean[][] createEmpty(){
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                board[i][j] = false;
-            }
-        }
-        return board;
-    }
-
-    private void fillWithRand(){
-        Random random = new Random();
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                board[i][j] = random.nextBoolean();
-            }
-        }
-    }
-
-    //Add clearing console
-    public void writeDown(){
-        for (int i = 0; i <= y; i++) {
-            System.out.print("--");
-        }
-        System.out.println();
-        for (int i = 0; i < x; i++) {
-            System.out.print("|");
-            for (int j = 0; j < y; j++) {
-                if (board[i][j]) System.out.print("■ ");
-                else System.out.print("  ");
-            }
-            System.out.print("|");
-            System.out.println();
-        }
-
-        for (int i = 0; i <= y; i++) {
-            System.out.print("--");
-        }
     }
 
     private int howManyLive(int x1, int y1){
@@ -106,15 +58,23 @@ public class gameOfLife {
         }
     }
 
-    // Jeśli tablica jest pusta to kończy grę
-    public boolean is_not_Empty(){
-        boolean[][] empty_board = new boolean[x][y];
-        if (board == empty_board) return false;
-        return true;
-    }
+    public void writeDown(){
+        for (int i = 0; i <= y; i++) {
+            System.out.print("--");
+        }
+        System.out.println();
+        for (int i = 0; i < x; i++) {
+            System.out.print("|");
+            for (int j = 0; j < y; j++) {
+                if (board[i][j]) System.out.print("■ ");
+                else System.out.print("  ");
+            }
+            System.out.print("|");
+            System.out.println();
+        }
 
-    //Clearing the console
-    public void clearConsole() throws IOException, InterruptedException {
-        waitFor = new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        for (int i = 0; i <= y; i++) {
+            System.out.print("--");
+        }
     }
 }
